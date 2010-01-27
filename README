@@ -3,6 +3,7 @@ This needs a lot of work. :)
 
 How to bootstrap from emacs with swank-clojure:
 
+- Run lein deps
 - Make sure the working directory is the physiq root
 - M-x swank-clojure-project
 - In the repl:
@@ -10,3 +11,10 @@ How to bootstrap from emacs with swank-clojure:
     (set-plan! (struct plan (today) (day 2010 6 1) 220 180)) ; Sets a plan, since there's no UI for plans yet
     (-main) ; Starts the server
 - Visit http://localhost:8080/
+
+How to run as a jar:
+
+lein deps
+lein compile
+lein uberjar
+java -jar physiq-standalone.jar
