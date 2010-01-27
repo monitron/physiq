@@ -1,5 +1,6 @@
 (ns visualizations
-  (:use (incanter core charts)
+  (:use [clojure.contrib.str-utils2 :only (capitalize)]
+        (incanter core charts)
 	(compojure.http response)
 	date-helpers
 	helpers

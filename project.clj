@@ -5,6 +5,7 @@
                  [org.clojars.somnium/mongo-java-driver "1.1.0-SNAPSHOT"]
 ;                 [org.clojars.somnium/clojure-db-object "0.1.1-SNAPSHOT"]
                  [org.clojars.somnium/congomongo "0.1.1-SNAPSHOT"]
+		 [compojure "0.3.2"]
 		 [incanter/incanter "1.0-master-SNAPSHOT"]]
 ;  :dev-dependencies [[org.clojure/swank-clojure "1.1.0"]]
 )
