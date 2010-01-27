@@ -1,0 +1,106 @@
+BODY {
+  background-color: #ddd;
+  font-family: helvetica, arial, sans-serif;
+  font-size: 15px;
+  margin: 5px;
+}
+
+.section {
+  background-color: white;
+  padding: 7px 9px;
+  margin-bottom: 10px;
+  -webkit-border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 290px;
+}
+
+H1 {
+  font-size: 1.3em;
+  color: #666;
+  margin: 5px 0px;
+}
+
+H2 {
+  font-size: 1.2em;
+  margin-top: 0;
+  color: #888;
+}
+
+UL {
+  list-style-type: none;
+}
+
+UL, OL {
+  margin: 0;
+  padding: 0;
+}
+
+LI {
+  list-style-type: none;
+}
+
+/* Forms */
+ol.forms { list-style: none; width: 100%; overflow: hidden; }
+ol.forms li {
+	clear: both;
+	float: left;
+	margin: 0 0 10px;
+	width: 100%;
+}
+ol.forms label {
+  cursor: pointer;
+  display: block;
+  float: left;
+  font-weight: bold;
+  margin: 0 10px 0 0;
+  width: 120px;
+}
+ol.forms input, ol.forms textarea {
+  font: inherit;
+  padding: 2px;
+  width: 100px;
+}
+ol.forms input[type=submit] {
+  width: auto;
+}
+ol.forms textarea { height: 250px; }
+ol.forms li.grouping label { margin: 0; width: auto; }
+ol.forms li.grouping { margin-bottom: 0; }
+ol.forms li.grouping ul { list-style: none; margin-left: 100px; }
+ol.forms li.grouping ul label {
+  display: inline;
+  float: none;
+  font-weight: normal;
+  margin: 0 0 0 10px;
+  width: auto;
+}
+ol.forms li.grouping ul input { width: auto; }
+ol.forms li.buttons { float: none; margin-left: 100px; width: auto; }
+
+/* Generalized Classes */
+
+.inactive {
+  display: none;
+}
+
+/* ----------- */
+
+LI.meal {
+  font-weight: bold;
+}
+LI.meal UL {
+  margin-left: 15px;
+}
+LI.food {
+  font-weight: normal;
+}
+
+#stats .editor {
+  display: none;
+}
+#stats.editing .editor {
+  display: block;
+}
+#stats.editing .viewer {
+  display: none;
+}
