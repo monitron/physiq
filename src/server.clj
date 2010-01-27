@@ -11,7 +11,7 @@
 
 (defroutes physiq-routes
   (GET "/"
-       (html [:h1 "Hello World"]))
+       (redirect-to "/journal/"))
   (GET "/journal/"
        (redirect-to (str "/journal/" (format-ymd (today)))))
   (GET "/journal/:date"
