@@ -1,4 +1,5 @@
 (ns server
+  (:gen-class)
   (:use compojure
 	somnium.congomongo
 	helpers
@@ -29,4 +30,5 @@
 (defserver physiq-server {:port 8080}
   "/*" (servlet physiq-routes))
 
-(start physiq-server)
+(defn -main [& args]
+  (start physiq-server))

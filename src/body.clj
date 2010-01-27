@@ -1,7 +1,6 @@
 (ns body
   (:use	clojure.contrib.math
-	food
-	journal))
+	food))
 
 (def activity-levels {:sedentary 1.2, :light 1.375, :moderate 1.55, 
 		      :high 1.725, :extreme 1.9})
