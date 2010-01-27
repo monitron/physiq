@@ -1,0 +1,12 @@
+
+This needs a lot of work. :)
+
+How to bootstrap from emacs with swank-clojure:
+
+- Make sure the working directory is the physiq root
+- M-x swank-clojure-project
+- In the repl:
+    (use 'server 'plan 'helpers)
+    (set-plan! (struct plan (today) (day 2010 6 1) 220 180)) ; Sets a plan, since there's no UI for plans yet
+    (-main) ; Starts the server
+- Visit http://localhost:8080/
