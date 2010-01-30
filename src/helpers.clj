@@ -1,7 +1,9 @@
 (ns helpers
+  (:use clojure.contrib.str-utils)
   (:import java.util.Calendar
 	   java.util.Date
-	   java.text.DecimalFormat))
+	   java.text.DecimalFormat
+	   java.security.MessageDigest))
 
 (defn date-to-day
   "Remove time information from a date"
@@ -63,3 +65,12 @@
   [m keys]
   "Retrieve multiple keys from a map and return their values"
   (map (fn [k] (k m)) keys))
+
+; thanks http://www.deskchecked.com/2009/06/22/clojure-and-messagedigest/
+(defn sha
+  "Generates a SHA-256 hash of the given input plaintext."
+  [input]
+  (let [md (MessageDigest/getInstance "SHA-256")]
+    (. md update (.getBytes input))
+    (let [digest (.digest md)]
+      (str-join "" (map #(Integer/toHexString (bit-and % 0xff)) digest)))))

@@ -44,7 +44,7 @@
 
 (defn serve-chart
   "Serves a chart PNG directly"
-  [request chart]
+  [session request chart]
   (let [out-stream (ByteArrayOutputStream.)
 	in-stream (do
 		    (save chart out-stream :width 290 :height 240)

@@ -99,7 +99,7 @@
 		  true (str "You nailed it!")) "."]])))
 
 (defn journal-post-food
-  [{:keys [date meal name calories]}]
+  [user {:keys [date meal name calories]}]
   (let [date (parse-ymd date)]
     (journal-add-food!
      date
@@ -108,7 +108,7 @@
     (redirect-to (str "/journal/" (format-ymd date)))))
 
 (defn journal-put-stats
-  [{:keys [date weight bodyfat activity]}]
+  [user {:keys [date weight bodyfat activity]}]
   (let [date (parse-ymd date)]
     (journal-record-stats! 
      date
@@ -120,10 +120,11 @@
     (redirect-to (str "/journal/" (format-ymd date)))))
 
 (defn journal-home-page
-  [date]
+  [user date]
   (let [date (parse-ymd date)
 	entry (journal-entry date)]
     (page
+     user
      (str "Journal for " 
 	  (format-ymd date) 
 	  (if (= date (today)) " (Today)"))

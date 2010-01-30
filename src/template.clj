@@ -2,7 +2,7 @@
   (:use compojure))
 
 (defn page
-  [title & content]
+  [user title & content]
   (html
    [:html
     [:head 
@@ -11,5 +11,9 @@
      (include-js "/jquery.js" "/application.js")
      (include-css "/application.css")]
     [:body
+     (if user
+     [:div#auth
+      "Physiq for " (user :email) " "
+      (link-to "/logout/" "logout")])
      [:h1 title]
      content]]))
