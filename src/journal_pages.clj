@@ -76,7 +76,8 @@
     (html
      [:div#plan.section
       [:h2 "Plan"]
-      [:img {:src "/charts/weight-over-plan?size=mini"}]
+      (if (plan-has-journal-entries? plan)
+	[:img {:src "/charts/weight-over-plan?size=mini"}])
       [:ul
        [:li "Plan day " (+ 1 (plan-day-number-for-date plan day))
 	" of " (+ 1 (plan-last-day-number plan))]

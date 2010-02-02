@@ -68,6 +68,16 @@
   (sort-by :day
 	   (fetch :journal :where {:day {:$gte start :$lte end}})))
 
+(defn journal-entries-for-plan
+  "Gathers journal entries for the date range of a plan"
+  [{:keys [start-date end-date]}]
+  (journal-entries-for-date-range start-date end-date))
+
+(defn plan-has-journal-entries?
+  "Returns whether a plan has any journal entries"
+  [plan]
+  (not (empty? (journal-entries-for-plan plan))))
+
 (defn simple-stat-over-time
   "Gathers one basic statistic for a date range, returning pairs of date and value"
   [stat start end]
