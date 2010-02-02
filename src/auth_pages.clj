@@ -15,7 +15,9 @@
 	       (text-field "email")]
 	      [:li (label "password" "Password:") 
 	       (password-field "password")]
-	      [:li (submit-button "Log In")]])]))
+	      [:li (submit-button "Log In")]])]
+   [:div.section
+    "New user? " (link-to "/user/new" "Sign up") "."]))
 
 (defn auth-post-login
   [session email password]

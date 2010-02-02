@@ -3,24 +3,30 @@
   (:use somnium.congomongo
 	clojure.contrib.math
 	body
+	helpers
 	date-helpers))
 
-(defstruct plan :start-date :end-date :start-weight :goal-weight)
-
 (defn plan-for-date
-  "Retrieves plan active on a certain date"
-  [date]
-  (fetch-one :plans)) ; This cheats.
+  "Retrieves user's plan active on a certain date"
+  [user date]
+  (fetch-one :plans 
+	     :where {:user_id (object-id user)
+		     :start-date {:$lte date}
+		     :end-date {:$gte date}}))
 
-(defn set-plan!
-  "Sets plan details"
-  [plan]
-  (update! :plans {} plan)) ; This is also a cheat.
+(defn create-plan!
+  "Creates a plan for a user"
+  [user start-date end-date start-weight goal-weight]
+  (insert! :plans {:user_id (object-id user)
+		   :start-date start-date
+		   :end-date end-date
+		   :start-weight start-weight
+		   :goal-weight goal-weight}))
 
 (defn plan-for-journal-entry
   "Retrieves the plan active for a journal entry"
-  [{:keys [day]}]
-  (plan-for-date day))
+  [{day :day user-id :user_id}]
+  (plan-for-date user-id day))
 
 (defn plan-day-number-for-date
   "Given a plan and a date, calculates the day number on which the date falls"

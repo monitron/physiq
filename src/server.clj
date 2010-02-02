@@ -7,6 +7,7 @@
 	auth
 	journal-pages
 	auth-pages
+	user-pages
 	visualizations))
 
 (mongo! :db "physiq")
@@ -20,6 +21,8 @@
 	(auth-post-login session (params :email) (params :password)))
   (GET "/logout/"
 	(only-authed (auth-post-logout session)))
+  (GET "/user/new"
+       (user-new-page))
   (GET "/journal/"
        (redirect-to (str "/journal/" (format-ymd (today)))))
   (GET "/journal/:date"
@@ -29,7 +32,7 @@
   (POST "/journal/:date/food"
 	(only-authed (journal-post-food (request :auth-user) params)))
   (GET "/charts/weight-over-plan"
-       (only-authed (serve-chart (request :auth-user) request (chart-weight-over-plan))))
+       (only-authed (serve-chart request (chart-weight-over-plan (request :auth-user)))))
   (GET "/*"
        (or (serve-file (params :*)) :next))
   (ANY "*" 

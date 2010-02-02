@@ -20,16 +20,8 @@
 	(handler (assoc request :auth-user (user-with-id user-id)))))))
 
 (defmacro only-authed
+  "Require login to access a Compojure route"
   [body]
   `(if (nil? (:auth-user ~'request))
      (redirect-to "/login/")
      ~body))
-		 
-(defn only-authenticated
-  "Compojure middleware to require authentication"
-  [handler]
-  (fn [request]
-    (if (nil? (:auth-user request))
-      {:status 302 :headers {"Location" "/login/"}}
-      (handler request))))
-      

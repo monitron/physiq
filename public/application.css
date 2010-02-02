@@ -4,7 +4,6 @@ BODY {
   font-size: 15px;
   margin: 5px;
 }
-
 .section {
   background-color: white;
   padding: 7px 9px;
@@ -13,30 +12,28 @@ BODY {
   border: 1px solid #ccc;
   width: 290px;
 }
-
 H1 {
   font-size: 1.3em;
   color: #666;
   margin: 5px 0px;
 }
-
 H2 {
   font-size: 1.2em;
   margin-top: 0;
   color: #888;
 }
-
 UL {
   list-style-type: none;
 }
-
 UL, OL {
   margin: 0;
   padding: 0;
 }
-
 LI {
   list-style-type: none;
+}
+FORM {
+  margin: 0;
 }
 
 /* Forms */

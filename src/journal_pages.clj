@@ -102,8 +102,7 @@
   [user {:keys [date meal name calories]}]
   (let [date (parse-ymd date)]
     (journal-add-food!
-     date
-     meal
+     user date meal
      (struct-map simple-food :name name :calories (parse-int calories)))
     (redirect-to (str "/journal/" (format-ymd date)))))
 
@@ -111,7 +110,7 @@
   [user {:keys [date weight bodyfat activity]}]
   (let [date (parse-ymd date)]
     (journal-record-stats! 
-     date
+     user date
      {
       :weight (parse-float weight)
       :bodyfat (percent-from-human (parse-float bodyfat))
@@ -122,7 +121,7 @@
 (defn journal-home-page
   [user date]
   (let [date (parse-ymd date)
-	entry (journal-entry date)]
+	entry (journal-entry user date)]
     (page
      user
      (str "Journal for " 

@@ -1,5 +1,6 @@
 (ns helpers
-  (:use clojure.contrib.str-utils)
+  (:use clojure.contrib.str-utils
+	somnium.congomongo)
   (:import java.util.Calendar
 	   java.util.Date
 	   java.text.DecimalFormat
@@ -74,3 +75,20 @@
     (. md update (.getBytes input))
     (let [digest (.digest md)]
       (str-join "" (map #(Integer/toHexString (bit-and % 0xff)) digest)))))
+
+(defn object-id
+  "Make sure we have an object ID (turns documents into their IDs)"
+  [id-or-document]
+  (if (= (class id-or-document) com.mongodb.ObjectId)
+    id-or-document
+    (:_id id-or-document)))
+
+(defn exponential-moving-average
+  "Calculate exponentially weighted moving average of a data set"
+  [data smooth-factor]
+  (loop [input (rest data) output [(first data)]]
+    (if (empty? input) 
+      output
+      (let [smoothed (+ (* smooth-factor (first input))
+			(* (- 1 smooth-factor) (last output)))]
+	(recur (rest input) (conj output smoothed))))))
