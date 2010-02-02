@@ -1,7 +1,10 @@
 (ns helpers
+  (:use clojure.contrib.str-utils
+	somnium.congomongo)
   (:import java.util.Calendar
 	   java.util.Date
-	   java.text.DecimalFormat))
+	   java.text.DecimalFormat
+	   java.security.MessageDigest))
 
 (defn date-to-day
   "Remove time information from a date"
@@ -63,3 +66,29 @@
   [m keys]
   "Retrieve multiple keys from a map and return their values"
   (map (fn [k] (k m)) keys))
+
+; thanks http://www.deskchecked.com/2009/06/22/clojure-and-messagedigest/
+(defn sha
+  "Generates a SHA-256 hash of the given input plaintext."
+  [input]
+  (let [md (MessageDigest/getInstance "SHA-256")]
+    (. md update (.getBytes input))
+    (let [digest (.digest md)]
+      (str-join "" (map #(Integer/toHexString (bit-and % 0xff)) digest)))))
+
+(defn object-id
+  "Make sure we have an object ID (turns documents into their IDs)"
+  [id-or-document]
+  (if (= (class id-or-document) com.mongodb.ObjectId)
+    id-or-document
+    (:_id id-or-document)))
+
+(defn exponential-moving-average
+  "Calculate exponentially weighted moving average of a data set"
+  [data smooth-factor]
+  (loop [input (rest data) output [(first data)]]
+    (if (empty? input) 
+      output
+      (let [smoothed (+ (* smooth-factor (first input))
+			(* (- 1 smooth-factor) (last output)))]
+	(recur (rest input) (conj output smoothed))))))

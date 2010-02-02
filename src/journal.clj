@@ -8,32 +8,52 @@
 (defstruct entry :day :food :exercise :weight :bodyfat :activity)
 
 (defn journal-entry
-  "Get the journal entry for a given day"
-  [day]
-  (let [template {:day day}]
+  "Get a user's journal entry for a given day"
+  [user day]
+  (let [user-id (object-id user)
+	template {:day day :user_id user-id}]
     (apply struct-map entry 
 	   (apply concat (or (fetch-one :journal :where template)
 			     template)))))
 
+(defn journal-entries-for-date-range
+  "Gathers and sorts entries for a date range"
+  [user start end]
+  (sort-by :day
+	   (fetch :journal :where {:user_id (object-id user)
+				   :day {:$gte start :$lte end}})))
+
+(defn journal-entries-for-plan
+  "Gathers journal entries for the date range of a plan"
+  [{start-date :start-date end-date :end-date user-id :user_id}]
+  (journal-entries-for-date-range user-id start-date end-date))
+
+(defn plan-has-journal-entries?
+  "Returns whether a plan has any journal entries"
+  [plan]
+  (not (empty? (journal-entries-for-plan plan))))
+
 (defn journal-clear!
   "Clear the journal for a given day"
-  [day]
-  (destroy! :journal {:day day}))
+  [user day]
+  (destroy! :journal {:user_id (object-id user) :day day}))
 
 (defn journal-add-food!
   "Add a food eaten to the journal"
-  [day meal food]
-  (update! :journal {:day day} {:$push {(str "food." meal) food}}))
+  [user day meal food]
+  (update! :journal {:user_id (object-id user) :day day} 
+	   {:$push {(str "food." meal) food}}))
 
 (defn journal-remove-food!
   "Remove a food eaten from the journal"
-  [day meal food]
-  (update! :journal {:day day} {:$pop {(str "food." meal) food}}))
+  [user day meal food]
+  (update! :journal {:user_id (object-id user) :day day} 
+	   {:$pop {(str "food." meal) food}}))
 
 (defn journal-record-stats!
   "Record a map of statistics for a day in the journal"
-  [day metrics]
-  (update! :journal {:day day} {:$set metrics}))
+  [user day metrics]
+  (update! :journal {:user_id (object-id user) :day day} {:$set metrics}))
 
 
 (defn all-food-eaten
@@ -62,32 +82,16 @@
   (- (energy-balance-for-journal-entry entry)
      (plan-goal-daily-calorie-adjustment (plan-for-journal-entry entry))))
 
-(defn journal-entries-for-date-range
-  "Gathers and sorts entries for a date range"
-  [start end]
-  (sort-by :day
-	   (fetch :journal :where {:day {:$gte start :$lte end}})))
-
-(defn journal-entries-for-plan
-  "Gathers journal entries for the date range of a plan"
-  [{:keys [start-date end-date]}]
-  (journal-entries-for-date-range start-date end-date))
-
-(defn plan-has-journal-entries?
-  "Returns whether a plan has any journal entries"
-  [plan]
-  (not (empty? (journal-entries-for-plan plan))))
-
 (defn simple-stat-over-time
   "Gathers one basic statistic for a date range, returning pairs of date and value"
-  [stat start end]
-  (let [entries (journal-entries-for-date-range start end)]
+  [user stat start end]
+  (let [entries (journal-entries-for-date-range user start end)]
     (map (fn [entry] [(:day entry) (stat entry)]) entries)))
 
 (defn computed-stats-over-time
   "Gathers all statistics (including computed ones) for a date range, returning pairs of date and value"
-  [start end]
-  (let [entries (journal-entries-for-date-range start end)]
+  [user start end]
+  (let [entries (journal-entries-for-date-range user start end)]
     (for [entry entries]
       (let [plan (plan-for-journal-entry entry)]
 	[(:day entry)

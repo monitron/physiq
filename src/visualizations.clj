@@ -24,8 +24,8 @@
     (.setRangeWithMargins axis (.getDataRange xyplot axis))))
 
 (defn chart-stats
-  [start end columns]
-  (let [data (dated-values-to-dataset (computed-stats-over-time start end) 
+  [user start end columns]
+  (let [data (dated-values-to-dataset (computed-stats-over-time user start end)
 				      columns)
 	days (sel data :cols :day)
 	primary-column (sel data :cols (first columns))
@@ -55,8 +55,8 @@
     (update-response request header in-stream)))
 
 (defn chart-weight-over-plan
-  []
+  [user]
   (let [end (today)
-	plan (plan-for-date end)
+	plan (plan-for-date user end)
 	start (plan :start-date)]
-    (chart-stats start end [:weight :goal-weight])))
+    (chart-stats user start end [:weight :goal-weight])))
